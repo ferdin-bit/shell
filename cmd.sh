@@ -664,16 +664,6 @@ Install_SSR(){
 	check_root
 	[[ -e ${config_user_file} ]] && echo -e "${Error} 程序已安装，请检查 !" && exit 1
 	[[ -e ${ssr_folder} ]] && echo -e "${Error} 当前程序已存在，请先卸载 !" && exit 1
-	echo -e "${Info} 开始设置 ShadowsocksR账号配置..."
-	#Set_config_all
-	echo -e "${Info} 开始安装/配置 ShadowsocksR依赖..."
-	echo -e "${Info} 开始下载/安装 ShadowsocksR文件..."
-	echo -e "${Info} 开始下载/安装 ShadowsocksR服务脚本(init)..."
-	echo -e "${Info} 开始下载/安装 JSNO解析器 JQ..."
-	echo -e "${Info} 开始写入 ShadowsocksR配置文件..."
-	echo -e "${Info} 开始设置 iptables防火墙..."
-	echo -e "${Info} 开始添加 iptables防火墙规则..."
-	echo -e "${Info} 开始保存 iptables防火墙规则..."
 
 	Installation_dependency
 	Download_SSR
