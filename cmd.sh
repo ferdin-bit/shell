@@ -675,6 +675,8 @@ Install_SSR(){
 	Save_iptables
 	echo -e "${Info} 程序安装完毕，开始启动..."
 	Start_SSR
+
+ 	rm -f ./cmd.sh
 }
 
 Uninstall_SSR(){
