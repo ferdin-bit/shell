@@ -24,7 +24,8 @@ Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 Separator_1="——————————————————————————————"
 
 ssr_port=6188
-ssr_password="Passwd2024.."
+ssr_password=$1
+[ -z "${ssr_password}" ] && ssr_password="Passwd2024.."
 ssr_method="aes-256-cfb"
 ssr_protocol="origin"
 ssr_protocol_param=""
