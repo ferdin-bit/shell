@@ -2,7 +2,7 @@
 **1)** 登录账号后点击右上角 “<span style="color:red">菜单->云服务器ECS</span>“ 或链接 [https://ecs.console.aliyun.com/home#/](https://ecs.console.aliyun.com/home#/) 打开服务器控制台
 ![图片1](./tttt/图片1.png)
 
-**2)** 点击服务器控制台左侧 “<“<span style="color:red">实例</span>“，选择 <“<span style="color:red">左上角地区(如香港)</span> 进入对于地区服务器管理
+**2)** 点击服务器控制台左侧 “<span style="color:red">实例</span>“，选择 <span style="color:red">左上角地区(如香港)</span> 进入对于地区服务器管理
 ![图片2](./tttt/002.png)
 
 **3)** 点击 “<span style="color:red">创建实例</span>” 按钮进入服务器购买界面
