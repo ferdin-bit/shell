@@ -1,2 +1,2 @@
 # shell
-![./tttt/图片1.png]
+![图片1](./tttt/图片1.png)
