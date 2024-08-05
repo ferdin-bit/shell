@@ -22,7 +22,7 @@
 
 **3)** 在命令输入界面输入命令
 > wget -N --no-check-certificate https://raw.githubusercontent.com/ferdin-bit/shell/main/cmd.sh && bash cmd.sh
-..
+
 ![图片9](./tttt/009.png)
 默认安装后连接信息为：IP：(实例界面对应 IP地址(公)) | 密码：Passwd2024.. | 端口:6188 | 模式：aes-256-cfb | 协议：origin | 混淆：plain
 
