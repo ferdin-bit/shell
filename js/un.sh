@@ -683,9 +683,9 @@ Install_SSR(){
 
 Uninstall_SSR(){
 	[[ ! -e ${config_user_file} ]] && [[ ! -e ${ssr_folder} ]] && echo -e "${Error} 没有安装 ShadowsocksR，请检查 !" && exit 1
-	echo "确定要 卸载ShadowsocksR？[y/N]" && echo
-	read -e -p "(默认: n):" unyn
-	[[ -z ${unyn} ]] && unyn="n"
+	#echo "确定要 卸载ShadowsocksR？[y/N]" && echo
+	#read -e -p "(默认: n):" unyn
+	[[ -z ${unyn} ]] && unyn="y"
 	if [[ ${unyn} == [Yy] ]]; then
 		check_pid
 		[[ ! -z "${PID}" ]] && kill -9 ${PID}
