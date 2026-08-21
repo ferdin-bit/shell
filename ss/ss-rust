@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 set -e
 
 # 版本信息
@@ -1831,5 +1830,4 @@ SS_PLUGIN=""
 SS_PLUGIN_OPTS=""
 
 # 启动脚本
-# Install "$@"
-echo 7987979
+Install "$@"
