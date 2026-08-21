@@ -1,13 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-# =========================================
-# 作者: jinqians
-# 日期: 2026年7月
-# 网站：jinqians.com
-# 描述: Shadowsocks Rust 管理脚本
-# =========================================
-
 # 版本信息
 SCRIPT_VERSION="1.9"
 SS_VERSION=""
@@ -49,19 +42,6 @@ readonly SUCCESS="${GREEN}[成功]${PLAIN}"
 OS_TYPE=""
 OS_ARCH=""
 OS_VERSION=""
-
-# 配置信息
-SS_PORT=$2
-[ -z "${SS_PORT}" ] && SS_PORT=6188
-SS_PASSWORD=$1
-[ -z "${SS_PASSWORD}" ] && SS_PASSWORD="Passwd2026.."
-# SS_PORT=""
-# SS_PASSWORD=""
-SS_METHOD="chacha20-ietf-poly1305"
-SS_TFO="true"
-SS_DNS="1.1.1.1"
-SS_PLUGIN=""
-SS_PLUGIN_OPTS=""
 
 # 错误处理函数
 error_exit() {
@@ -203,6 +183,9 @@ get_latest_version() {
     
     # 移除版本号中的 'v' 前缀
     SS_VERSION=${SS_VERSION#v}
+
+    
+    SS_VERSION="1.18.4"
     
     echo -e "${INFO} 检测到 Shadowsocks Rust 最新版本为 [ ${SS_VERSION} ]"
 }
@@ -464,6 +447,7 @@ install_dependencies() {
     echo -e "${INFO} 开始安装系统依赖..."
     
     if [[ ${OS_TYPE} == "centos" ]]; then
+        echo -e "${INFO} 安装CentOS系统依赖..."
         local pkg_mgr
         pkg_mgr=$(rhel_pkg_mgr)
         # qrencode 等包在 RHEL 系需要 EPEL 源
@@ -471,6 +455,7 @@ install_dependencies() {
         ${pkg_mgr} install -y jq gzip wget curl unzip xz openssl tar || error_exit "系统依赖安装失败，请检查网络和软件源"
         ${pkg_mgr} install -y qrencode || echo -e "${WARNING} qrencode 安装失败，二维码功能不可用，不影响其他功能"
     else
+        echo -e "${INFO} 安装其他系统依赖..."
         apt-get update
         apt-get install -y jq gzip wget curl unzip xz-utils openssl qrencode tar
     fi
@@ -975,13 +960,13 @@ Install() {
     echo -e "${Info} 检测系统信息..."
     detect_os
     
-    # echo -e "${Info} 开始设置配置..."
-    # set_port
-    # set_method
-    # set_password
-    # set_tfo
-    # set_dns
-    # set_plugin
+#    echo -e "${Info} 开始设置配置..."
+#    set_port
+#    set_method
+#    set_password
+#    set_tfo
+#    set_dns
+#    set_plugin
 
     echo -e "${Info} 开始安装/配置依赖..."
     install_dependencies
@@ -998,21 +983,23 @@ Install() {
     install_service
 
     echo -e "${Info} 创建命令快捷方式..."
-    curl -L -s ss.jinqians.com -o "/usr/local/bin/ss-2022.sh"
-    chmod +x "/usr/local/bin/ss-2022.sh"
+    
+    # 使用当前脚本作为命令行启动
+    script_dir=$(realpath "$0")
     if [ -f "/usr/local/bin/ssrust" ]; then
         rm -f "/usr/local/bin/ssrust"
     fi
-    ln -s "/usr/local/bin/ss-2022.sh" "/usr/local/bin/ssrust"
+    ln -s script_dir "/usr/local/bin/ssrust"
     
     echo -e "${Info} 所有步骤安装完毕，开始启动服务..."
     start_service
     
     if [[ "$?" == "0" ]]; then
         echo -e "${Success} Shadowsocks Rust 安装并启动成功！"
+        clear
         View
-        echo -e "${Info} 您可以使用 ${Green_font_prefix}ssrust${Font_color_suffix} 命令进行管理"
-        Before_Start_Menu
+        # echo -e "${Info} 您可以使用 ${Green_font_prefix}ssrust${Font_color_suffix} 命令进行管理"
+        # Before_Start_Menu
     else
         echo -e "${Error} Shadowsocks Rust 启动失败，请检查日志！"
         echo -e "${Info} 您可以使用以下命令查看详细日志："
@@ -1251,19 +1238,20 @@ View() {
     [[ ! -z "${ss_url_ipv4}" ]] && echo -e "${Green_font_prefix}IPv4 链接：${Font_color_suffix}${ss_url_ipv4}"
     [[ ! -z "${ss_url_ipv6}" ]] && echo -e "${Green_font_prefix}IPv6 链接：${Font_color_suffix}${ss_url_ipv6}"
 
-    echo -e "\n${Yellow_font_prefix}=== Shadowsocks 二维码 ===${Font_color_suffix}"
-    if command -v qrencode &> /dev/null; then
-        if [[ ! -z "${ss_url_ipv4}" ]]; then
-            echo -e "${Green_font_prefix}IPv4 二维码：${Font_color_suffix}"
-            echo "${ss_url_ipv4}" | qrencode -t UTF8
-        fi
-        if [[ ! -z "${ss_url_ipv6}" ]]; then
-            echo -e "${Green_font_prefix}IPv6 二维码：${Font_color_suffix}"
-            echo "${ss_url_ipv6}" | qrencode -t UTF8
-        fi
-    else
-        echo -e "${Red_font_prefix}未安装 qrencode，无法生成二维码${Font_color_suffix}"
-    fi
+    # 取消二维码显示
+    # echo -e "\n${Yellow_font_prefix}=== Shadowsocks 二维码 ===${Font_color_suffix}"
+    # if command -v qrencode &> /dev/null; then
+    #     if [[ ! -z "${ss_url_ipv4}" ]]; then
+    #         echo -e "${Green_font_prefix}IPv4 二维码：${Font_color_suffix}"
+    #         echo "${ss_url_ipv4}" | qrencode -t UTF8
+    #     fi
+    #     if [[ ! -z "${ss_url_ipv6}" ]]; then
+    #         echo -e "${Green_font_prefix}IPv6 二维码：${Font_color_suffix}"
+    #         echo "${ss_url_ipv6}" | qrencode -t UTF8
+    #     fi
+    # else
+    #     echo -e "${Red_font_prefix}未安装 qrencode，无法生成二维码${Font_color_suffix}"
+    # fi
 
     echo -e "\n${Yellow_font_prefix}=== Surge 配置 ===${Font_color_suffix}"
     local surge_obfs=""
@@ -1740,13 +1728,8 @@ Start_Menu() {
         check_root
         detect_os
         action=${1:-}
-    echo -e "${GREEN}============================================${RESET}"
-    echo -e "${GREEN}          SS - 2022 管理脚本 ${RESET}"
-    echo -e "${GREEN}============================================${RESET}"
-    echo -e "${GREEN}            作者: jinqian${RESET}"
-    echo -e "${GREEN}       网站：https://jinqians.com${RESET}"
-    echo -e "${GREEN}============================================${RESET}"
         echo && echo -e "  
+        
  ${Green_font_prefix}0.${Font_color_suffix} 更新脚本
 ——————————————————————————————————
  ${Green_font_prefix}1.${Font_color_suffix} 安装 Shadowsocks Rust
@@ -1835,6 +1818,19 @@ Start_Menu() {
         esac
     done
 }
+
+# 配置信息
+SS_PORT=$2
+[ -z "${SS_PORT}" ] && SS_PORT=$(generate_random_port)
+SS_PASSWORD=$1
+[ -z "${SS_PASSWORD}" ] && SS_PASSWORD="Passwd2026.."
+# SS_PORT=""
+# SS_PASSWORD=""
+SS_METHOD="chacha20-ietf-poly1305"
+SS_TFO="true"
+SS_DNS="1.1.1.1"
+SS_PLUGIN=""
+SS_PLUGIN_OPTS=""
 
 # 启动脚本
 Install "$@"
