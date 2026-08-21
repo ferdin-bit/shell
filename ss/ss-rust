@@ -183,9 +183,6 @@ get_latest_version() {
     
     # 移除版本号中的 'v' 前缀
     SS_VERSION=${SS_VERSION#v}
-
-    
-    SS_VERSION="1.18.4"
     
     echo -e "${INFO} 检测到 Shadowsocks Rust 最新版本为 [ ${SS_VERSION} ]"
 }
